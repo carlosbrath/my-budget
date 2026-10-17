@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Budget</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/images/icon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img class="logo" src="icons/logo-64.png" alt="" width="28" height="28"> My Budget</div>
+
+    <div class="period">
+      <button class="icon-btn" id="prevMonth" title="Previous month" aria-label="Previous month">&#8249;</button>
+      <div class="period-label" id="periodLabel"></div>
+      <button class="icon-btn" id="nextMonth" title="Next month" aria-label="Next month">&#8250;</button>
+      <div class="seg" id="periodMode">
+        <button type="button" data-mode="month">Month</button>
+        <button type="button" data-mode="all">All time</button>
+      </div>
+      <button class="btn small ghost" id="thisMonthBtn">This month</button>
+    </div>
+
+    <div class="top-actions">
+      <button type="button" class="file-status" id="fileStatus" data-action="fileStatus" hidden></button>
+      <button type="button" class="btn small primary" id="installBtn" data-action="installApp" hidden>Install app</button>
+      <button class="icon-btn" id="themeToggle" title="Light / dark theme" aria-label="Toggle theme">&#9680;</button>
+    </div>
+  </header>
+
+  <div id="banner"></div>
+
+  <main class="layout">
+    <!-- Quick add panel -->
+    <aside class="panel add-panel">
+      <form id="entryForm" autocomplete="off" novalidate>
+        <div class="form-head">
+          <h2 id="formTitle">Add entry</h2>
+          <span class="kbd-hint" title="Press / anywhere to jump here">/</span>
+        </div>
+
+        <div class="type-tabs" id="typeTabs">
+          <button type="button" data-kind="expense">Expense</button>
+          <button type="button" data-kind="income">Income</button>
+          <button type="button" data-kind="committee">Committee</button>
+          <button type="button" data-kind="lend">Lend</button>
+          <button type="button" data-kind="borrow">Borrow</button>
+        </div>
+
+        <div class="sub-toggle" id="subToggle"></div>
+
+        <label class="field">
+          <span>Amount</span>
+          <input id="fAmount" class="amount-input" inputmode="decimal" placeholder="0" aria-describedby="amountHint">
+          <small id="amountHint" class="hint">You can type sums like 500+250</small>
+        </label>
+
+        <div class="field" id="headField">
+          <label for="fHead">Head</label>
+          <select id="fHead"></select>
+          <div class="chips" id="headChips"></div>
+        </div>
+
+        <label class="field" id="personField">
+          <span>Person</span>
+          <input id="fPerson" list="peopleList" placeholder="Type a name">
+          <datalist id="peopleList"></datalist>
+          <small id="personHint" class="hint"></small>
+        </label>
+
+        <div class="field" id="committeeField">
+          <label for="fCommittee">Committee</label>
+          <select id="fCommittee"></select>
+        </div>
+
+        <label class="field">
+          <span>Date</span>
+          <input type="date" id="fDate">
+          <small id="dateHint" class="hint warn"></small>
+        </label>
+
+        <label class="field">
+          <span>Note <em>(optional)</em></span>
+          <input id="fNote" placeholder="e.g. Shell, full tank">
+        </label>
+
+        <p class="form-error" id="formError" role="alert"></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary" id="saveBtn">Save</button>
+          <button type="button" class="btn" id="cancelEdit" hidden>Cancel</button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Main views -->
+    <section class="content">
+      <nav class="tabs" id="tabs">
+        <button data-tab="report">Report</button>
+        <button data-tab="entries">Entries</button>
+        <button data-tab="check">Balance check</button>
+        <button data-tab="people">People</button>
+        <button data-tab="committees">Committees</button>
+        <button data-tab="heads">Heads</button>
+        <button data-tab="backup">Settings</button>
+      </nav>
+      <div id="view"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="js/util.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/filestore.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/form.js"></script>
+  <script src="js/lock.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/entries.js"></script>
+  <script src="js/check.js"></script>
+  <script src="js/people.js"></script>
+  <script src="js/committees.js"></script>
+  <script src="js/heads.js"></script>
+  <script src="js/backup.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

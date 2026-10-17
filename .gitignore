@@ -1,0 +1,10 @@
+# Personal data — never commit
+backups/
+budget-data.json
+budget-backup-*.json
+budget-*.csv
+*.json
+
+# Local tool output
+graphify-out/
+.claude/
