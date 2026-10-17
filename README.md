@@ -22,3 +22,7 @@ Your data stays on your own device — nothing is sent to any server.
 
 ## Run locally (Windows)
 Double-click `Start Budget.bat` — it serves the app at http://localhost:8765 (no installs needed).
+
+## License
+Copyright (c) 2026 Ahsan Danish. All rights reserved — see [LICENSE](LICENSE).
+You may use the app; copying or reusing the source code is not permitted without permission.
