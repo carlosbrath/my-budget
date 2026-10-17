@@ -3,7 +3,7 @@
 A small personal budget app (PKR) that runs in the browser and installs like an app on a laptop or phone.
 Expenses, income, committees, lend & borrow, and a weekly balance check.
 
-**Open it:** https://OWNER.github.io/REPO/
+**Open it:** https://carlosbrath.github.io/my-budget/
 
 ## Install
 - **Laptop (Chrome / Edge):** open the link, click **Install app** (or the install icon in the address bar).
