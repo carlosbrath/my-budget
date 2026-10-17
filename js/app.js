@@ -138,13 +138,7 @@ const App = {
       else if (FileStore.perm === 'prompt') FileStore.reconnect();
       else App.setTab('backup');
     },
-    installApp: async () => {
-      const p = App.installPrompt;
-      if (!p) return;
-      App.installPrompt = null;
-      document.getElementById('installBtn').hidden = true;
-      p.prompt();
-    },
+    installApp: () => App.install(),
 
     exportJson: () => Backup.exportJson(),
     exportCsv: el => Backup.exportCsv(el.dataset.scope),
@@ -164,8 +158,45 @@ const App = {
     window.addEventListener('appinstalled', () => {
       this.installPrompt = null;
       document.getElementById('installBtn').hidden = true;
-      U.toast('App installed — open it from the Start menu or desktop');
+      U.toast(U.isMobile() ? 'App installed — open it from your home screen' : 'App installed — open it from the Start menu or desktop');
     });
+    // Phones often never offer a one-tap install (iPhone never does), so the button is always
+    // there on mobile and explains the steps instead.
+    const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    if (U.isMobile() && !installed && location.protocol === 'https:') document.getElementById('installBtn').hidden = false;
+  },
+
+  install() {
+    const p = this.installPrompt;
+    if (p) {
+      this.installPrompt = null;
+      p.prompt();
+      p.userChoice.then(c => { if (c.outcome === 'accepted') document.getElementById('installBtn').hidden = true; });
+      return;
+    }
+    const ua = navigator.userAgent;
+    const ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const inApp = /FBAN|FBAV|Instagram|Line\/|Snapchat|TikTok|; wv\)/i.test(ua);
+    const steps = inApp
+      ? `<p>This page is open inside another app (WhatsApp, Facebook, Instagram…), which can't install apps.</p>
+         <ol><li>Tap the <b>⋮</b> or <b>…</b> menu.</li><li>Choose <b>Open in Chrome</b>${ios ? ' / <b>Open in Safari</b>' : ''}.</li><li>Tap <b>Install app</b> again there.</li></ol>`
+      : ios
+        ? `<ol><li>Tap the <b>Share</b> button <span aria-hidden="true">(square with an arrow ↑)</span>${/CriOS/.test(ua) ? ' in the address bar' : ' at the bottom of Safari'}.</li>
+             <li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>`
+        : `<ol><li>Open this page in <b>Chrome</b>.</li><li>Tap the <b>⋮</b> menu (top right).</li>
+             <li>Tap <b>Install app</b> or <b>Add to Home screen</b>, then <b>Install</b>.</li></ol>`;
+    const wrap = document.createElement('div');
+    wrap.className = 'modal-backdrop';
+    wrap.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+      <h3 id="installTitle">Install My Budget</h3>
+      <div class="install-steps">${steps}</div>
+      <p class="muted">It then opens from your home screen like an app and works offline.</p>
+      <div class="form-actions"><button type="button" class="btn primary">OK</button></div>
+    </div>`;
+    const close = () => wrap.remove();
+    wrap.querySelector('button').onclick = close;
+    wrap.addEventListener('click', e => { if (e.target === wrap) close(); });
+    document.body.appendChild(wrap);
   },
 
   shiftMonth(n) {
